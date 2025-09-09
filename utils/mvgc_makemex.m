@@ -84,7 +84,7 @@ else
     fprintf(2,'\nNOTE: At present ''mvgc_makemex'' has only been tested on Unix (gcc) and Windows (Visual Studio).\nIf you are on a different  platform/compiler and have any useful compilation tips, it would be\nvery helpfull if you could tell the MVGC maintainers about it.\n');
 end
 
-cc = mex.getCompilerConfigurations();
+cc = mex.getCompilerConfigurations('C');
 
 fprintf('\nYour platform   appears to be : %s (mex extension: %s)\n',plat,mexext);
 fprintf('Your C compiler appears to be : %s\n',cc(1).Name);
