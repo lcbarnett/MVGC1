@@ -61,7 +61,7 @@ function mvgc_makemex(force_recompile,verbose, force_test)
 
 if nargin < 1 || isempty(force_recompile), force_recompile = false; end;
 if nargin < 2 || isempty(verbose),         verbose         = false; end;
-if nargin < 2 || isempty(force_test),      force_test         = false; end;
+if nargin < 3 || isempty(force_test),      force_test         = false; end;
 
 % default mex command
 
