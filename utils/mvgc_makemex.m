@@ -14,6 +14,7 @@
 %
 %     force_recompile  forced recompilation flag (default: false)
 %     verbose          verbosity flag (default: false)
+%     force_test       forced test flag (default: false)
 %
 %% Description
 %
@@ -54,12 +55,13 @@
 %
 %%
 
-function mvgc_makemex(force_recompile,verbose)
+function mvgc_makemex(force_recompile,verbose, force_test)
 
 % Build MVGC 'mex' files
 
 if nargin < 1 || isempty(force_recompile), force_recompile = false; end;
 if nargin < 2 || isempty(verbose),         verbose         = false; end;
+if nargin < 2 || isempty(force_test),      force_test         = false; end;
 
 % default mex command
 
@@ -109,7 +111,7 @@ else
     try
         eval(mexinvoc);
         fprintf('Looks like ''%s'' compiled ok. ',cfile);
-        have_genvar_mex = testmex(cfroot);
+        have_genvar_mex = testmex(cfroot, force_test);
     catch
         fprintf(2,'Hrmmph. ''%s'' failed to compile. Please tell the maintainer about this.\nMeanwhile don''t panic, an equivalent (but slower) scripted ''%s'' will be used.\n\n',cfile,cfroot);
     end
@@ -136,14 +138,18 @@ return
 
 % Test the mex file
 
-function success = testmex(cfroot)
+function success = testmex(cfroot, force_test)
 
 mfroot  = [cfroot '_mex'];
 mexfile = [mfroot '.' mexext];
 testfun = [cfroot '_mex_test'];
 
-fprintf('Do you want to test ''%s'' (note: If Matlab crashes the test failed ;)\n',mexfile);
-reply = input('Go for test? y/n [y]: ', 's');
+if force_test
+    reply = 'y';
+else
+    fprintf('Do you want to test ''%s'' (note: If Matlab crashes the test failed ;)\n',mexfile);
+    reply = input('Go for test? y/n [y]: ', 's');
+end
 
 success = false;
 if isempty(reply) || strcmpi(reply,'y')
