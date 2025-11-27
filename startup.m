@@ -9,6 +9,22 @@
 % (C) Lionel Barnett and Anil K. Seth, 2012. See file license.txt in
 % installation directory for licensing terms.
 %
+%% Skip initialisation if already initialised (unless mvgc_forceinit is set)
+
+global mvgc_initialised
+if mvgc_initialised
+	if exist('mvgc_forceinit') && mvgc_forceinit
+		fprintf('[MVGC startup] Already initialised - forcing re-initialisation\n');
+		mvgc_initialised = false;
+		clear mvgc_forceinit
+	else
+		fprintf('[MVGC startup] Already initialised - skipping\n');
+		return
+	end
+else
+	fprintf('[MVGC startup] Initialising\n');
+end
+
 %% Set toolbox version
 
 global mvgc_version;
@@ -121,8 +137,8 @@ fprintf('[MVGC startup]\n');
 
 % Done
 
-fprintf('[MVGC startup] Initialisation complete (you may re-run ''startup'' at any time)\n');
-
+mvgc_initialised = true;
+fprintf('[MVGC startup] Initialisation complete\n');
 fprintf('[MVGC startup] Type ''helpon'' to get started\n');
 
 %%
